@@ -24,7 +24,9 @@
 #TODO   
 #- LMER fit to individuals +
 #- BRMS estimate priors and weights simultaneously +
-#- BRMS joint model
+#- Reorganise functions
+#- Comment
+#- BRMS joint model ?
 
 
 # Load packages -----------------------------------------------------------
