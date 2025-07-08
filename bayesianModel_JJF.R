@@ -886,7 +886,7 @@ qe_lst = lapply(mod_lst,
 
 draw_lst = lapply(mod_lst,
                   prepare_predictions, 
-                  ndraws = 1000)
+                  ndraws = NULL)#use all
 
 
 Draws2Post = function(draw)
