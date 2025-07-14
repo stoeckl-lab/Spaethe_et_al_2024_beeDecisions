@@ -992,3 +992,49 @@ mapply(FUN = PlotDens,
        ylim = list(c(0,12))
        )
 
+# Plot as bars ------------------------------------------------------------
+#generate quantiles
+quant_ppo = apply(X = data.frame(ppo_lst),
+                  MARGIN = 2,
+                  FUN = quantile,
+                  probs = c(0,0.25,0.5,0.75,1)+c(1,0,0,0,-1)*0.05/2 )
+
+#generates the same spacing as R's default barplot function
+BarSpacer = function(n, 
+                     spa = 0.2,
+                     wdt = 1.0)
+{
+  seq(from = spa+1-wdt/2,
+      to = n*(1+spa)-wdt/2,
+      length.out = n )
+}
+
+par(mfrow = c(1,1))
+barplot(height = quant_ppo[3,],
+        col = c('darkgreen', 
+                     'darkgreen', 
+                     'green', 
+                     'green'),
+        ylim = c(0,1),
+        ylab = 'weights (rel. units)'
+        )
+abline(h = 0.5)
+arrows(x0 = BarSpacer(4),
+       y0 = quant_ppo[1,],
+       y1 = quant_ppo[5,],
+       code = 3,
+       angle = 90,
+       length = 0.2,
+       lwd = 3,
+       lend ='butt',
+       col = 'gray'
+       )
+arrows(x0 = BarSpacer(4),
+       y0 = quant_ppo[2,],
+       y1 = quant_ppo[4,],
+       code = 3,
+       angle = 90,
+       length = 0.2,
+       lwd = 5,
+       lend = 'butt'
+       )
