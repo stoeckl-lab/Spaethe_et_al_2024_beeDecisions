@@ -1,6 +1,6 @@
 # Details ---------------------------------------------------------------
 #       AUTHOR:	James Foster              DATE: 2025 07 07
-#     MODIFIED:	James Foster              DATE: 2025 07 08
+#     MODIFIED:	James Foster              DATE: 2025 07 14
 #
 #  DESCRIPTION: Modified from "bayesianModel.m" by Anna Stöckl.
 #               Uses data from the single cue experiments to predict performance
@@ -34,7 +34,10 @@ require(lme4)#for mixed effects modelling
 require(glmmTMB)#for beta-binomial models
 require(brms)#for (non-linear) Bayesian estimation
 
-
+print(R.version.string)
+citation("lme4")
+citation("brms")
+rstan::stan_version()
 # Set up useful functions -------------------------------------------------
 
 
@@ -688,7 +691,7 @@ pr_col1_pat = within(pr_col1_pat,
                              {
                         paste0('normal(',
                                  qlogis(`probability.(Intercept)`), ',',
-                               max(sem, ind_sd.ID), ')') #the distribution of the prior
+                               sum(sem, ind_sd.ID), ')') #the distribution of the prior
                       }
                       )
                       }
@@ -703,7 +706,7 @@ pr_col2_pat = within(pr_col2_pat,
                              {
                         paste0('normal(',
                                  qlogis(`probability.(Intercept)`), ',',
-                               max(sem, ind_sd.ID), ')') #the distribution of the prior
+                               sum(sem, ind_sd.ID), ')') #the distribution of the prior
                       }
                       )
                       }
@@ -718,7 +721,7 @@ pr_col1_shap = within(pr_col1_shap,
                              {
                         paste0('normal(',
                                  qlogis(`probability.(Intercept)`), ',',
-                               max(sem, ind_sd.ID), ')') #the distribution of the prior
+                               sum(sem, ind_sd.ID), ')') #the distribution of the prior
                       }
                       )
                       }
@@ -733,7 +736,7 @@ pr_col2_shap = within(pr_col2_shap,
                              {
                         paste0('normal(',
                                  qlogis(`probability.(Intercept)`), ',',
-                               max(sem, ind_sd.ID), ')') #the distribution of the prior
+                               sum(sem, ind_sd.ID), ')') #the distribution of the prior
                       }
                       )
                       }
