@@ -959,26 +959,46 @@ dens_lst = lapply(draw_lst,
 
 PlotDens = function(dens,
                     col_fill = 'darkgreen',
+                    scaling = 'original',
+                    normby = 4000,
                     ... # passed to plot
                     )
 {
   plot(x = NULL,
-       ylab = 'estimate density (rel. units)',
+       ylab = switch(EXPR = scaling,
+                     original = 'estimate density (rel. units)',
+                     auc_1 = 'probability density (rel. units)',
+                     bymax = 'normalised density (rel. units)',
+                     bynorm = 'normalised density (rel. units)',
+                     'estimate density (rel. units)'),
        xlab ='weight (rel. units)',
        ...
   )
-  with(dens,
-       {
-  polygon(x = c(x, rev(x)),
-          y = c(y, rep(0, length(y))),
+  xx = with(dens, {c(x, rev(x))})
+  yy = with(dens, 
+            {
+              switch(EXPR = scaling,
+              original = c(y, rep(0, length(y))),
+              auc_1 = c(y/ #smoothing makes this less than 1.0, integrate to estimate smoothed area
+                          sfsmisc::integrate.xy(x = x, fx = y), 
+                        rep(0, length(y))),
+              bymax = c(y/max(y, na.rm = TRUE), 
+                        rep(0, length(y))),
+              bynorm = c(y/normby, 
+                        rep(0, length(y))),
+              c(y, rep(0, length(y)))
+              )
+            }
+            )
+  polygon(x = xx,
+          y = yy,
           col = col_fill,
           border = NA
           )
-       }
-  )
   abline(h = 0)
 }
 
+#original version
 par(mfrow = c(2,2),
     mar = c(5,5,3,0))
 mapply(FUN = PlotDens,
@@ -993,6 +1013,42 @@ mapply(FUN = PlotDens,
                 'Close colours vs shapes'),
        xlim = list(c(0,1)),
        ylim = list(c(0,12))
+       )
+
+#normalised to AUC version
+par(mfrow = c(2,2),
+    mar = c(5,5,3,0))
+mapply(FUN = PlotDens,
+       dens = dens_lst,
+       scaling = 'auc_1',
+       col_fill = c('darkgreen', 
+                    'darkgreen', 
+                    'green', 
+                    'green'),
+       main = c('Distant colours vs patterns',
+                'Distant colours vs shapes',
+                'Close colours vs patterns',
+                'Close colours vs shapes'),
+       xlim = list(c(0,1)),
+       ylim = list(c(0,17))
+       )
+#normalised to maximum density version
+par(mfrow = c(2,2),
+    mar = c(5,5,3,0))
+mapply(FUN = PlotDens,
+       dens = dens_lst,
+       scaling = 'bynorm',
+       normby = max(unlist(do.call(rbind, dens_lst)[,'y'])),
+       col_fill = c('darkgreen', 
+                    'darkgreen', 
+                    'green', 
+                    'green'),
+       main = c('Distant colours vs patterns',
+                'Distant colours vs shapes',
+                'Close colours vs patterns',
+                'Close colours vs shapes'),
+       xlim = list(c(0,1)),
+       ylim = list(c(0,1))
        )
 
 # Plot as bars ------------------------------------------------------------
