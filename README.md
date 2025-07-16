@@ -12,4 +12,4 @@ Analysis files for the publication "Bumblebees flexibly adjust learning and deci
 6) GLMM Mean Test Naive patternVScol.R performs a generalised linear model with random effects (glmer), with a binomial family and "logit" link on the choices for the rewarded and non-rewarded stimuli, included animal identity as random effects, and the stimulus types (colour and pattern or shape) as a fixed effects
 
 # Bayesian model of conflict choices based on single attribute learning as priors
-7) bayesianModel.m reads in the choice distributions of single attribute tests, and uses these as priors to generate a Bayesian model, which predicts the fraction of choices for colour in the conflict tests. The priors are combined with a weighting factor, which is fitted to the observed choice data in the conflict tests.
+7) bayesianModel.R reads in the choice distributions of single attribute tests, and uses these as priors to generate a Bayesian model, which predicts the fraction of choices for colour in the conflict tests. The priors are combined with a weighting factor, which is fitted to the observed choice data in the conflict tests.
